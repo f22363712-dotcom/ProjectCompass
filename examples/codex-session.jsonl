@@ -1,0 +1,2 @@
+{"id":"codex-e1","type":"assistant_message","session_id":"codex-demo","author":"codex","content":"Set the project goal","timestamp":"2026-10-23T09:00:00+00:00","metadata":{"facts":[{"kind":"goal","subject_key":"project.goal","value":"Ship the evidence board"},{"kind":"task","subject_key":"task.golden-path","value":"Run the golden path","status":"active"}]}}
+{"id":"codex-e2","type":"tool_result","session_id":"codex-demo","author":"codex","content":"7 tests passed","timestamp":"2026-10-23T09:01:00+00:00","tool":"unittest","exit_code":0}

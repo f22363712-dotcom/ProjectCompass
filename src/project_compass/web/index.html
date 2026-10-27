@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Compass · Evidence Surface</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Project Compass 首页">
+      <span class="brand-mark">PC</span>
+      <span><strong>Project Compass</strong><small>Evidence surface for agent work</small></span>
+    </a>
+    <div class="connection"><span class="pulse"></span><span id="connection-label">Local workspace</span></div>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">PROJECT STATE / <span id="evidence-count">0</span> EVIDENCE ITEMS</p>
+        <h1 id="project-title">Project Compass</h1>
+        <p class="hero-copy">看见个人正在推进什么，也看见团队已经确认什么。</p>
+      </div>
+      <div class="view-switch" aria-label="选择视图">
+        <button class="lens active" data-lens="personal">Personal view</button>
+        <button class="lens" data-lens="team">Team truth</button>
+      </div>
+    </section>
+
+    <section class="toolbar" aria-label="视图工具">
+      <label class="member-picker" id="member-picker">Member
+        <select id="member-select" aria-label="选择成员"></select>
+      </label>
+      <label class="reviewer-field">负责人
+        <input id="reviewer-input" type="text" placeholder="填写姓名" autocomplete="off">
+      </label>
+      <span class="toolbar-note">候选关系仍需确认 · 原始材料不会被静默覆盖</span>
+      <div class="layer-switch" aria-label="选择信息层">
+        <button type="button" class="layer-choice active" data-layer-choice="overview">概览</button>
+        <button type="button" class="layer-choice" data-layer-choice="process">过程</button>
+        <button type="button" class="layer-choice" data-layer-choice="source">原文</button>
+      </div>
+    </section>
+
+    <section id="intake-bar" class="intake-bar" aria-label="会话接入状态" hidden>
+      <span id="intake-status"></span><button type="button" id="refresh-intake">刷新会话</button>
+    </section>
+    <section id="project-scan-bar" class="intake-bar" aria-label="项目文件状态" hidden>
+      <span id="project-scan-status"></span><button type="button" id="rescan-project">重新扫描项目</button>
+    </section>
+    <section class="metrics layer-section" data-layer="overview" id="metrics" aria-label="项目概览"></section>
+    <section id="extraction-bar" class="intake-bar" aria-label="候选整理状态" hidden>
+      <span id="extraction-status"></span><button type="button" id="extract-candidates">整理一批新材料</button>
+    </section>
+
+    <section class="layout">
+      <div class="main-column">
+        <section class="surface goal-surface layer-section" data-layer="overview">
+          <div class="surface-head"><span class="eyebrow">CURRENT FOCUS</span><span class="status-pill" id="goal-status">proposed</span></div>
+          <h2 id="goal-title">等待扫描结果</h2>
+          <p id="goal-note">运行一次项目扫描后，这里会显示当前层的目标。</p>
+        </section>
+
+        <section class="surface trace-surface layer-section" data-layer="process" aria-label="项目历程与决策图">
+          <div class="surface-head"><span class="eyebrow">PROJECT TRACE / 项目历程</span><span class="count" id="trace-count">0</span></div>
+          <div class="trace-toolbar"><p>按来源时间浏览，同一主题保留不同记录。点击节点查看原文。</p><div><button type="button" id="trace-start">回到开头</button><button type="button" id="trace-latest">最新记录</button></div></div>
+          <div class="trace-legend"><span class="trace-wire candidate">引用关联待核对</span><span class="trace-wire confirmed">支持关系已确认</span><span>负责人确认单独标记 · 时间顺序不代表因果</span></div>
+          <div class="trace-scroller" id="trace-scroller" tabindex="0" role="region" aria-label="横向项目历程，可左右滚动"><div class="trace-track" id="trace-track"></div></div>
+        </section>
+
+        <section class="surface layer-section" data-layer="process" id="direction-surface">
+          <div class="surface-head"><span class="eyebrow" id="direction-title">方向状态候选</span><span class="count" id="direction-count">0</span></div>
+          <p class="empty" id="direction-note">明确的放弃或暂缓表述需要负责人确认。</p>
+          <div id="direction-list" class="direction-list"></div>
+          <div id="direction-history" class="direction-history"></div>
+        </section>
+
+        <section class="surface layer-section" data-layer="process" id="reason-preview-surface" hidden>
+          <div class="surface-head"><span class="eyebrow">原因候选预览</span><span class="count" id="reason-preview-count">0</span></div>
+          <div id="reason-preview-list"></div>
+        </section>
+
+        <section class="surface investigation-surface layer-section" data-layer="overview">
+          <div class="surface-head"><span class="eyebrow">INVESTIGATE THE PROJECT</span><span class="count">TEAM CONTEXT</span></div>
+          <form id="investigation-form" class="investigation-form">
+            <label for="investigation-question">Ask about the current state</label>
+            <div class="question-row"><input id="investigation-question" type="text" value="为什么项目会处于当前状态，下一步该做什么？" autocomplete="off"><button id="investigate-submit" type="submit" disabled>Ask Compass</button></div>
+          </form>
+          <div id="investigation-answer" class="investigation-answer" hidden></div>
+        </section>
+
+        <section class="surface layer-section" data-layer="process">
+          <div class="surface-head"><span class="eyebrow" id="facts-kicker">PERSONAL FACTS</span><span class="count" id="facts-count">0</span></div>
+          <div id="fact-list" class="fact-list"></div>
+        </section>
+
+        <section class="surface layer-section" data-layer="process" id="team-truth-history" hidden>
+          <div class="surface-head"><span class="eyebrow">TEAM TRUTH HISTORY</span><span class="count" id="conflict-count">0</span></div>
+          <div id="conflict-list" class="conflict-list"></div>
+          <div id="history-list" class="history-list"></div>
+        </section>
+
+        <section class="surface layer-section" data-layer="source">
+          <div class="surface-head evidence-head"><span class="eyebrow" id="evidence-kicker">EVIDENCE SPINE</span><div class="evidence-tools"><input id="evidence-filter" type="search" placeholder="筛选证据" aria-label="筛选证据"><span class="count" id="spine-count">0</span></div></div>
+          <div id="evidence-spine" class="evidence-spine"></div>
+        </section>
+      </div>
+
+      <aside class="surface side-note layer-section" data-layer="overview">
+        <div class="surface-head"><span class="eyebrow">HOW TO READ</span></div>
+        <div class="reading-rule"><span class="rule-dot confirmed-dot"></span><div><strong>Confirmed relation</strong><p>负责人已经确认的事实关系。</p></div></div>
+        <div class="reading-rule"><span class="rule-dot candidate-dot"></span><div><strong>Candidate relation</strong><p>材料可能支持事实，仍需核对。</p></div></div>
+        <div class="reading-rule"><span class="rule-dot raw-dot"></span><div><strong>Raw material</strong><p>已扫描，但尚未建立事实关联。</p></div></div>
+        <p class="side-foot">时间顺序帮助定位来源，不自动代表因果关系。</p>
+      </aside>
+    </section>
+  </main>
+
+  <aside id="evidence-drawer" class="drawer" aria-label="证据抽屉" aria-hidden="true" hidden>
+    <div class="drawer-head"><div><p class="eyebrow">EVIDENCE DETAIL</p><h2 id="drawer-title">选择一条材料</h2></div><button class="icon-button" id="drawer-close" aria-label="关闭证据抽屉">×</button></div>
+    <div id="drawer-body" class="drawer-body"><p class="empty">点击事实卡或证据条目查看原文。</p></div>
+  </aside>
+  <div id="scrim" class="scrim" hidden></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+[project]
+name = "project-compass"
+version = "0.1.0"
+description = "Shared, evidence-backed project state for teams building with coding agents."
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+

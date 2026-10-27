@@ -1,0 +1,4 @@
+# Optional JDBC smoke/client dependencies. Offline/sample mode does not need these.
+JayDeBeApi==1.2.3
+JPype1==1.6.0
+packaging==25.0
